@@ -6,7 +6,6 @@ var http = require('http');
 var path = require('path');
 var models = require("./models");
 var app = express();
-
 // all environments
 app.set('port', process.env.PORT || 8000);
 app.set('views', __dirname + '/views');
@@ -22,6 +21,37 @@ app.use(express.static(path.join(__dirname, 'public')));
 if ('development' == app.get('env')) {
     app.use(errorhandler());
 }
+
+// models.Admin.create({
+//   username: "Chris",
+//   password: "cayman"
+// })
+
+// models.Question.create({
+//   question: "What is your favorite food?",
+//   AdminId: 1
+// })
+// models.Choice.create({
+//   QuestionId: 1,
+//   AdminId: 1,
+//   choice: "Sushi"
+// })
+// models.Choice.create({
+//   QuestionId: 1,
+//   AdminId: 1,
+//   choice: "Pizza"
+// })
+
+models.Question.findAll({
+  where: {
+    AdminId: 1
+  },
+  include: [
+    {model: models.Choice}
+  ]
+}).then(function(fetched) {
+  console.log('THIS ADMIN WAS FETCH', fetched[0].Choices)
+})
 
 models.sequelize.sync().then(function() {
  var server = app.listen(app.get('port'), function() {
