@@ -8,13 +8,13 @@ module.exports = function(sequelize, DataTypes) {
     },
     password : {
       type : DataTypes.STRING,
-    }, {
-      classMethods: {
-        associate: function(models) {
-          Guest.hasMany(models.Answer)
-        }
+    }
+  }, {
+    classMethods: {
+      associate: function(models) {
+        Guest.hasMany(models.Answer)
       }
     }
-  });
+  })
   return Guest;
 };

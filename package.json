@@ -9,6 +9,7 @@
   "author": "Chris Castillo",
   "license": "ISC",
   "dependencies": {
+    "errorhandler": "^1.4.2",
     "express": "^4.13.3",
     "morgan": "^1.6.1",
     "mysql": "^2.10.0",
