@@ -1,19 +1,45 @@
 var express = require('express');
-// var routes = require('./routes');
-// var user = require('./routes/user');
-var errorhandler = require('errorhandler')
+var errorhandler = require('errorhandler');
 var http = require('http');
 var path = require('path');
-var models = require('./models');
-var app = express();
-var router = express.Router();
 var Sequelize = require("sequelize");
 var Promise = require('bluebird');
+var models = require('./models');
+
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var expressSession = require('express-session');
+
+var app = express();
+var router = express.Router();
+var passport = require('passport');
+require('./config/passport.js')(passport);
+
 // all environments
 app.set('port', process.env.PORT || 8000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname + './client')));
+
+app.use(bodyParser.urlencoded({extended: false})); // get information from html forms
+app.use(cookieParser()); // read cookies (needed for auth)
+app.use(expressSession({
+  secret: process.env.SESSION_SECRET || "the secret",
+  resave: false,
+  saveUninitialized: false
+}))
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+//Protect routes by checking if user is authenticated
+var isAuthenticated = function (req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  } else {
+    res.redirect('/');
+  }
+}
 
 // development only
 if ('development' == app.get('env')) {
@@ -21,7 +47,7 @@ if ('development' == app.get('env')) {
 }
 
 //Get the Admin's Questions and their Answers
-router.get('/admin/questions', function(req, res) {
+router.get('/admin/questions', isAuthenticated, function(req, res) {
   models.Question.findAll({
     where: {
       AdminId: req.user.id
@@ -37,29 +63,6 @@ router.get('/admin/questions', function(req, res) {
 })
 
 //Allows Admin to add a Question
-
-//-------------TEST
-// models.Question.create({
-//   question: "What is your favorite car?",
-//   AdminId: 1
-// })
-// models.Choice.create({
-//   QuestionId: 2,
-//   AdminId: 1,
-//   choice: "PORSCHE"
-// })
-//
-// models.Question.create({
-//   question: 'what do you like to fly?',
-//   AdminId: 1
-// })
-// models.Choice.create({
-//   QuestionId: 3,
-//   AdminId: 1,
-//   choice: "Nekkid"
-// })
-//-------------?TEST
-
 router.post('/admin/add', function (req, res) {
   models.Question.create({
     question: req.body.question,
@@ -76,9 +79,10 @@ router.post('/admin/choice/:qid', function (req, res) {
   })
 })
 
+//Helper Function
 var selectQuestion = function (count, guestId) {
   //Select random Id to Query
-  //Check if that Id has already been answered
+  //Check if that Question Id has already been answered
   var randomNum = Math.floor((Math.random() * count) + 1);
   return models.Answer.findAll({
     where: {
@@ -106,8 +110,8 @@ var selectQuestion = function (count, guestId) {
 }
 
 //Find a Random Question for Guest
-router.get('/guest/question', function (req, res) {
-  models.Question.count().then(function(questionCount) {
+router.get('/guest/question', isAuthenticated, function (req, res) {
+  return models.Question.count().then(function(questionCount){
     return models.Answer.count().then(function(answerCount){
       if(questionCount === answerCount) {
         return null
@@ -116,7 +120,7 @@ router.get('/guest/question', function (req, res) {
       }
     })
   }).then(function(results){
-    if(results === null) {
+    if(results === null){
       console.log('ALL QUESTIONS HAVE BEEN ANSWERED', results)
       res.json({question: "All Answered"})
     } else {
@@ -132,6 +136,40 @@ router.post('/guest/answer/:qid', function (req,res) {
     QuestionId: req.params.qid,
     choice: req.body.answer
   })
+})
+
+//Register an Admin
+router.post('/admin/register', function(req, res) {
+  var username = req.body.username;
+  var password = req.body.password;
+  models.Admin.create({
+    username: username,
+    password: password
+  }).then(function() {
+    res.json({admin: username})
+  })
+})
+
+//Register a Guest
+router.post('/guest/register', function(req, res) {
+  var username = req.body.username;
+  var password = req.body.password;
+  models.Guest.create({
+    username: username,
+    password: password
+  }).then(function() {
+    res.json({guest: username})
+  })
+})
+
+//Admin Login
+router.post('/login/admin', passport.authenticate('local', { failureRedirect: '/' }), function(req, res){
+  res.redirect('/admin');
+})
+
+//Guest Login
+router.post('/login/guest', passport.authenticate('local', { failureRedirect: '/' }), function(req, res){
+  res.redirect('/guest');
 })
 
 app.use('/', router);
