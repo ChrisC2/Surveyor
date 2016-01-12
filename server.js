@@ -19,9 +19,10 @@ require('./config/passport.js')(passport);
 app.set('port', process.env.PORT || 8000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
-app.use(express.static(path.join(__dirname + './client')));
+app.use(express.static(path.join(__dirname + '/./client')));
 
-app.use(bodyParser.urlencoded({extended: false})); // get information from html forms
+app.use(bodyParser.urlencoded({extended: true})); // get information from html forms
+app.use(bodyParser.json());
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(expressSession({
   secret: process.env.SESSION_SECRET || "the secret",
@@ -35,6 +36,7 @@ app.use(passport.session());
 //Protect routes by checking if user is authenticated
 var isAuthenticated = function (req, res, next) {
   if (req.isAuthenticated()) {
+    console.log("HES AUTHENTICATED")
     return next();
   } else {
     res.redirect('/');
@@ -84,6 +86,8 @@ var selectQuestion = function (count, guestId) {
   //Select random Id to Query
   //Check if that Question Id has already been answered
   var randomNum = Math.floor((Math.random() * count) + 1);
+  console.log('THIS IS GUEST ID: ', guestId);
+  console.log('THIS IS RANDOMNUM:', randomNum)
   return models.Answer.findAll({
     where: {
       GuestId: guestId,
@@ -97,7 +101,10 @@ var selectQuestion = function (count, guestId) {
       return models.Question.findOne({
         where: {
           id: randomNum
-        }
+        },
+        include: [
+          {model: models.Choice}
+        ]
       }).then(function(question){
         console.log('3.) RETURNING RESULT', question)
         return question
@@ -112,19 +119,25 @@ var selectQuestion = function (count, guestId) {
 //Find a Random Question for Guest
 router.get('/guest/question', isAuthenticated, function (req, res) {
   return models.Question.count().then(function(questionCount){
-    return models.Answer.count().then(function(answerCount){
-      if(questionCount === answerCount) {
+    return models.Answer.findAll({
+      where : {
+        GuestId: req.user.id
+      }
+    })
+    .then(function(answerCount){
+      if(questionCount === answerCount.length) {
         return null
       } else {
-        return selectQuestion(questionCount, 1)
+        selectQuestion(questionCount, req.user.id).then(function(question){
+          console.log('THIS IS QUESTION', question)
+          res.json(question)
+        })
       }
     })
   }).then(function(results){
+    console.log('RESULTS WTFFFF', results)
     if(results === null){
-      console.log('ALL QUESTIONS HAVE BEEN ANSWERED', results)
       res.json({question: "All Answered"})
-    } else {
-      res.json(results)
     }
   })
 })
@@ -152,6 +165,7 @@ router.post('/admin/register', function(req, res) {
 
 //Register a Guest
 router.post('/guest/register', function(req, res) {
+  console.log('REGISTERING', req.body)
   var username = req.body.username;
   var password = req.body.password;
   models.Guest.create({
@@ -169,7 +183,8 @@ router.post('/login/admin', passport.authenticate('local', { failureRedirect: '/
 
 //Guest Login
 router.post('/login/guest', passport.authenticate('local', { failureRedirect: '/' }), function(req, res){
-  res.redirect('/guest');
+  console.log('HELLO')
+  res.json(req.user)
 })
 
 app.use('/', router);
