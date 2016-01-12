@@ -14,6 +14,14 @@ angular
         controller: 'MainCtrl',
         templateUrl: '/templates/guest-login.html'
       })
+      .when('/admin-register', {
+        controller: 'MainCtrl',
+        templateUrl: '/templates/admin-register.html'
+      })
+      .when('/guest-register', {
+        controller: 'MainCtrl',
+        templateUrl: '/templates/guest-register.html'
+      })
       .when('/admin', {
         controller: 'AdminCtrl',
         templateUrl: '/templates/admin.html'

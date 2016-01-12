@@ -135,7 +135,6 @@ router.get('/guest/question', isAuthenticated, function (req, res) {
       }
     })
   }).then(function(results){
-    console.log('RESULTS WTFFFF', results)
     if(results === null){
       res.json({question: "All Answered"})
     }
@@ -165,7 +164,6 @@ router.post('/admin/register', function(req, res) {
 
 //Register a Guest
 router.post('/guest/register', function(req, res) {
-  console.log('REGISTERING', req.body)
   var username = req.body.username;
   var password = req.body.password;
   models.Guest.create({
@@ -178,12 +176,11 @@ router.post('/guest/register', function(req, res) {
 
 //Admin Login
 router.post('/login/admin', passport.authenticate('local', { failureRedirect: '/' }), function(req, res){
-  res.redirect('/admin');
+  res.json(req.user)
 })
 
 //Guest Login
 router.post('/login/guest', passport.authenticate('local', { failureRedirect: '/' }), function(req, res){
-  console.log('HELLO')
   res.json(req.user)
 })
 
