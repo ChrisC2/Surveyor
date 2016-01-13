@@ -109,6 +109,7 @@ var selectQuestion = function (count, guestId) {
         return question
       })
     } else {
+      //Else recurse to find an unanswered question
       return selectQuestion(count, guestId)
     }
   })
@@ -127,10 +128,10 @@ router.get('/guest/question', isAuthenticated, function (req, res) {
       if(questionCount === answerCount.length) {
         return null
       } else {
-        var result = Promise.resolve(result).then(function(result){
+        var resolvedQuestion = Promise.resolve(resolvedQuestion).then(function(){
           return selectQuestion(questionCount, req.user.id)
         })
-        return result
+        return resolvedQuestion
       }
     })
   }).then(function(results){
