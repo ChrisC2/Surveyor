@@ -26,7 +26,7 @@
     $('.add-question').fadeToggle();
   })
 
-  $('.question-button').on('click', function(){
+  $('.question-button').on('click', function() {
     $('#question-form').hide();
     $('#answers-form').show();
   })
@@ -34,4 +34,8 @@
   $('.finalize').on('click', function() {
     $('#answers-form').hide();
     $('#question-form').show()
+  })
+
+  $('.btn-choice').on('click', function () {
+    $('#answer').val('')
   })

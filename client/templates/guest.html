@@ -1,10 +1,21 @@
 <div ng-controller="GuestCtrl as ctrl">
+  <header>
+    <nav>
+      <div class="nav-container">
+        <a class="dropdown"><img class="nav-icon" src="icons/ic_menu_24px.svg"></a>
+        <a class="dropdown"><img class="close-icon" src="icons/ic_close_24px.svg"></a>
+        <div class="title"><h2>Random Question of the Day!</h2></div>
+      </div>
+      <ul><a href="/logout"><li>Logout</li></a>
+      </ul>
+    </nav>
+  </header>
   <div class="question" ng-init="getQuestion()">
-    <h1>Random Question of the Day:</h1>
-    <h3>{{question.question}}</h2>
+    <h2>{{question.question}}</h2>
     <h3>Click Your Answer: </h3>
     <ul ng-repeat="answer in answerStorage">
       <li class="answer" ng-click="postAnswer(question.questionId, answer.answer)">{{answer.answer}}</li>
     </ul>
   </div>
 </div>
+<script src="/js/jquery.js"></script>
