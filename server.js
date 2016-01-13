@@ -143,7 +143,7 @@ router.post('/guest/answer/:qid', function (req,res) {
   models.Answer.create({
     GuestId: req.user.id,
     QuestionId: req.params.qid,
-    choice: req.body.answer
+    answer: req.body.answer
   }).then(function(){
     res.send('answer submitted')
   })

@@ -56,6 +56,7 @@ angular
           questionId: returnObj.data.id,
           question: returnObj.data.question
         };
+        console.log('THIS IS returnObj', returnObj)
         returnObj.data.Choices.forEach(function(answer){
           $scope.answerStorage.push({
             answerId: answer.id,
