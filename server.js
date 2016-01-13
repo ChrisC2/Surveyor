@@ -109,10 +109,11 @@ var selectQuestion = function (count, guestId) {
         return question
       })
     } else {
-      selectQuestion()
+      return selectQuestion(count, guestId)
     }
   })
 }
+
 
 //Find a Random Question for Guest
 router.get('/guest/question', isAuthenticated, function (req, res) {
@@ -126,14 +127,17 @@ router.get('/guest/question', isAuthenticated, function (req, res) {
       if(questionCount === answerCount.length) {
         return null
       } else {
-        selectQuestion(questionCount, req.user.id).then(function(question){
-          res.json(question)
+        var result = Promise.resolve(result).then(function(result){
+          return selectQuestion(questionCount, req.user.id)
         })
+        return result
       }
     })
   }).then(function(results){
     if(results === null){
       res.json({question: "All Answered"})
+    } else {
+      res.json(results)
     }
   })
 })

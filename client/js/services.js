@@ -112,7 +112,7 @@ angular
         return $http({
           method: 'GET',
           url: '/guest/question'
-        }).then(function(data){
+        }).success(function(data){
           return data
         })
       },
