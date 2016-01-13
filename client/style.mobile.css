@@ -1,0 +1,57 @@
+/*Set Breakpoint for mobile view*/
+@media (max-width: 580px){
+  nav ul {
+    max-height: 0px;
+  }
+  .nav-container {
+    display: block;
+  }
+  .nav-container a {
+    float:left;
+  }
+  .nav-container h2 {
+    padding: 3px 20px;
+  }
+  .show {
+    max-height: 20em;
+  }
+  nav ul li {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 15px;
+    text-align: left;
+  }
+  li {
+    border-bottom: 1px solid #EDF1F2;
+  }
+  .dropdown {
+    display: block
+  }
+  #question-container {
+    float: none;
+    width: 95%;
+    margin: auto;
+  }
+  #article-container {
+    float: none;
+    width: 95%;
+    margin: auto;
+  }
+  .add-question {
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .question {
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right:auto;
+    float: none;
+  }
+  .article {
+    margin: auto;
+    float: none;
+  }
+  .close {
+    display: none;
+  }

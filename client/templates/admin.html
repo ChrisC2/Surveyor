@@ -1,0 +1,64 @@
+<div ng-controller="AdminCtrl as ctrl" ng-init="getQuestions()">
+  <header>
+    <nav>
+      <div class="nav-container">
+        <a class="dropdown"><img class="nav-icon" src="icons/ic_menu_24px.svg"></a>
+        <a class="dropdown"><img class="close-icon" src="icons/ic_close_24px.svg"></a>
+        <div class="title"><h2>My Questions</h2></div>
+      </div>
+      <ul><a href="/logout"><li>Logout</li></a>
+      </ul>
+    </nav>
+  </header>
+  <div id="content-container">
+      <div id="question-container">
+        <div class="add-question">
+          <h1 class="welcome">Welcome!</h1>
+            <h3>Have any new Survey questions today?</h3>
+            <div class="card-footer">
+              <h4 class="no">NO</h4>
+              <h4 class="gold yes">YES</h4>
+            </div>
+          </div>
+      <div class="question" ng-repeat="questions in questionStorage">
+          <h1>{{questions.question}}</h1>
+          <h3>Answers: </h3>
+          <ul>
+            <li ng-repeat="answers in questions.answers ">{{answers.answer}}: {{answers.count}}</li>
+          </ul>
+          </div>
+        </div>
+      </div>
+        <div id="graph-container"></div>
+      </div>
+      <div class="modal" id="open">
+        <div class="modal-container">
+          <div class="close-modal">
+            <img class="close-icon" src="icons/ic_close_24px.svg">
+          </div>
+          Your Question: <br>
+          {{currentQuestion.question}}
+          <div ng-repeat="choice in currentChoices">
+            <ul>
+              <li>{{choice}}</li>
+            </ul>
+          </div>
+          <form id="question-form">
+            Question: <br>
+            <input ng-model="currentQuestion.question" type="text" id="question">
+            <br>
+            <button class="question-button" type="button" ng-click="postQuestion(currentQuestion.question)">Add Question</button>
+          </form>
+          <form id="answers-form">
+            Add Multiple Answers: <br>
+            <input ng-model="answer" type="text" id="answer">
+            <br>
+            <button type="button" ng-click="addChoice(currentQuestion.questionId, answer)">Add Answer</button>
+            <br>
+            <button class="finalize" type="button" ng-click="resetQuestion()">Finalize Your Question</button>
+            <br>
+          </form>
+        </div>
+      </div>
+</div>
+<script src="/js/jquery.js"></script>

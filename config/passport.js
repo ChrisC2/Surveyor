@@ -34,38 +34,33 @@ passport.deserializeUser(function(id, done) {
 // Use local strategy to check whether user is Admin or Guest
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    console.log('INSIDE PASSPORT USER:', username, password)
     models.Admin.find({
       where: {
         username: username
       }
     }).then(function(adminUser){
       if(!adminUser) {
-        console.log('NOT ADMIN')
         //Not Admin so check if Guest
         models.Guest.find({
           where: {
             username: username
           }
         }).then(function(guestUser){
-          console.log('THIS IS GUEST USER')
+          //Check if Guest
           if(!guestUser) {
             //Neither Guest or Admin
             done(null, false, { message: 'Unknown user' });
           } else if(password != guestUser.password) {
             done(null, false, { message: 'Invalid password'});
           } else {
-            console.log('USER FOUND!')
             done(null, guestUser);
           }
         })
       } else {
-        console.log('FALLOUT NEITHER')
         //User is Admin
         if(password != adminUser.password){
           done(null, false, { message: 'Invalid password'});
         } else {
-          console.log('ADMIN EXISTS')
           done(null, adminUser);
         }
       }

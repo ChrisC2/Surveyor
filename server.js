@@ -36,7 +36,6 @@ app.use(passport.session());
 //Protect routes by checking if user is authenticated
 var isAuthenticated = function (req, res, next) {
   if (req.isAuthenticated()) {
-    console.log("HES AUTHENTICATED")
     return next();
   } else {
     res.redirect('/');
@@ -59,25 +58,30 @@ router.get('/admin/questions', isAuthenticated, function(req, res) {
       {model: models.Answer}
     ]
   }).then(function(questions) {
-    console.log('THESE ARE ADMIN QUESTIONS', questions)
     res.json(questions);
   })
 })
 
 //Allows Admin to add a Question
 router.post('/admin/add', function (req, res) {
-  models.Question.create({
+  return models.Question.create({
     question: req.body.question,
     AdminId: req.user.id
+  }).then(function(data){
+    res.json({
+      questionId: data.dataValues.id
+    });
   })
 })
 
 //Allows Admin to add Choices to their Question
 router.post('/admin/choice/:qid', function (req, res) {
-  models.Choice.create({
+  return models.Choice.create({
     QuestionId: req.params.qid,
     AdminId: req.user.id,
     choice: req.body.choice
+  }).then(function(data){
+    res.json(data.dataValues.choice)
   })
 })
 
@@ -86,16 +90,12 @@ var selectQuestion = function (count, guestId) {
   //Select random Id to Query
   //Check if that Question Id has already been answered
   var randomNum = Math.floor((Math.random() * count) + 1);
-  console.log('THIS IS GUEST ID: ', guestId);
-  console.log('THIS IS RANDOMNUM:', randomNum)
   return models.Answer.findAll({
     where: {
       GuestId: guestId,
       QuestionId: randomNum
     }
   }).then(function(result) {
-    console.log('1.) THIS IS RANDOMNUM:',randomNum)
-    console.log('2.) THIS IS RESULT ON ANSWER QUERY', result)
     //if question hasn't been answered query for that question
     if(result.length === 0) {
       return models.Question.findOne({
@@ -106,11 +106,9 @@ var selectQuestion = function (count, guestId) {
           {model: models.Choice}
         ]
       }).then(function(question){
-        console.log('3.) RETURNING RESULT', question)
         return question
       })
     } else {
-      console.log('RECURSIVE CALL')
       selectQuestion()
     }
   })
@@ -129,7 +127,6 @@ router.get('/guest/question', isAuthenticated, function (req, res) {
         return null
       } else {
         selectQuestion(questionCount, req.user.id).then(function(question){
-          console.log('THIS IS QUESTION', question)
           res.json(question)
         })
       }
@@ -147,6 +144,8 @@ router.post('/guest/answer/:qid', function (req,res) {
     GuestId: req.user.id,
     QuestionId: req.params.qid,
     choice: req.body.answer
+  }).then(function(){
+    res.send('answer submitted')
   })
 })
 
@@ -183,6 +182,13 @@ router.post('/login/admin', passport.authenticate('local', { failureRedirect: '/
 router.post('/login/guest', passport.authenticate('local', { failureRedirect: '/' }), function(req, res){
   res.json(req.user)
 })
+
+//Logout
+router.get('/logout', function(req, res){
+  req.session.destroy();
+  req.logout();
+  res.redirect('/');
+});
 
 app.use('/', router);
 
