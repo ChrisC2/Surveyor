@@ -1,5 +1,6 @@
 var LocalStrategy = require('passport-local').Strategy;
 var models = require('../models');
+var bcrypt = require('bcrypt-nodejs');
 
 module.exports = function (passport) {
 
@@ -50,7 +51,7 @@ passport.use(new LocalStrategy(
           if(!guestUser) {
             //Neither Guest or Admin
             done(null, false, { message: 'Unknown user' });
-          } else if(password != guestUser.password) {
+          } else if(!bcrypt.compareSync(password, guestUser.password)) {
             done(null, false, { message: 'Invalid password'});
           } else {
             done(null, guestUser);
@@ -58,7 +59,7 @@ passport.use(new LocalStrategy(
         })
       } else {
         //User is Admin
-        if(password != adminUser.password){
+        if(!bcrypt.compareSync(password, adminUser.password)){
           done(null, false, { message: 'Invalid password'});
         } else {
           done(null, adminUser);

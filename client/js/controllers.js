@@ -36,7 +36,7 @@ angular
       var username = user.username;
       var password = user.password;
       GuestService.guestRegister(username, password)
-      .success(function(){
+      .success(function(response){
         $location.path('/guest-login')
       })
     },
@@ -48,7 +48,6 @@ angular
         $location.path('/admin-login')
       })
     }
-
   }])
 
   .controller('GuestCtrl', ['$scope', 'GuestService', function($scope, GuestService){

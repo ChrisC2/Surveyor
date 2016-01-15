@@ -27,7 +27,7 @@ angular
       },
       /* GET request for Admin's posted Questions
       * Maps data in form of:
-      [{question: question, answers: [{answer: answer, count: count}],...]
+      [{question: question, answers: [{answer: answer, count: count},..],...]
       */
       getQuestions: function(){
         return $http({
@@ -130,5 +130,5 @@ angular
   }])
 
   .factory('Auth', [function(){
-    
+
   }])

@@ -3,6 +3,7 @@ var models = require('../models');
 var helpers = require('./helper.js');
 var passport = require('passport');
 var Promise = require('bluebird');
+var bcrypt = require('bcrypt-nodejs');
 
 //Get the Admin's Questions and their Answers
 router.get('/admin/questions', helpers.isAuthenticated, function(req, res) {
@@ -83,11 +84,24 @@ router.post('/guest/answer/:qid', function (req,res) {
 router.post('/admin/register', function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
-  models.Admin.create({
-    username: username,
-    password: password
-  }).then(function() {
-    res.json({admin: username})
+//Check if Admin already exists
+  models.Admin.findAll({
+    where: {
+      username: username
+    }
+  }).then(function(user){
+    if(user.length !== 0){
+      res.send('User Already Exists')
+    } else {
+      //hash password before storing
+      var hash = bcrypt.hashSync(password);
+      models.Admin.create({
+        username: username,
+        password: hash
+      }).then(function() {
+        res.json({admin: username})
+      })
+    }
   })
 })
 
@@ -95,11 +109,24 @@ router.post('/admin/register', function(req, res) {
 router.post('/guest/register', function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
-  models.Guest.create({
-    username: username,
-    password: password
-  }).then(function() {
-    res.json({guest: username})
+//Check if that Guest already exists
+  models.Guest.findAll({
+    where: {
+      username: username
+    }
+  }).then(function(user){
+    if(user.length !== 0){
+      res.send('User Already Exists');
+    } else {
+      //hash password before storing
+      var hash = bcrypt.hashSync(password);
+      models.Guest.create({
+        username: username,
+        password: hash
+      }).then(function() {
+        res.json({guest: username})
+      })
+    }
   })
 })
 
