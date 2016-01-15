@@ -7,9 +7,9 @@ Media queries were implemented in order to optimize the views for mobile devices
 
 #### Improvements to be Made Given More Time:
 1. Polish the UI
-2. Use Bcrypt or middleware to crptographically store passwords
-3. Fix edge cases so that empty values cannot be entered
-4. HighCharts Pie Graphs on survey results
+2. Fix edge cases so that empty values cannot be entered
+3. HighCharts Pie Graphs on survey results
+4. Further Modularize Code
 
 # Run the App:
 ## Install Dependencies:
