@@ -1,6 +1,6 @@
 angular
   .module('app.controllers', [])
-  .controller('MainCtrl',['$scope', 'GuestService', 'AdminService', '$location', function($scope, GuestService, AdminService, $location){
+  .controller('MainCtrl',['$scope', 'GuestService', 'AdminService', '$location', '$rootScope', function($scope, GuestService, AdminService, $location, $rootScope){
 
     $scope.guestLogin = function(user){
       var username = user.username;
@@ -8,6 +8,9 @@ angular
       GuestService.guestLogin(username, password)
       .success(function(guest){
         if(guest.username) {
+          $rootScope.loggedInUser = true;
+          $rootScope.guest = true;
+          $rootScope.admin = false;
           $location.path('/guest')
         } else {
           $location.path('/')
@@ -20,6 +23,9 @@ angular
       AdminService.adminLogin(username, password)
       .success(function(admin){
         if(admin.username) {
+          $rootScope.loggedInUser = true;
+          $rootScope.guest = false;
+          $rootScope.admin = true;
           $location.path('/admin')
         } else {
           $location.path('/')

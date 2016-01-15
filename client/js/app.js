@@ -34,3 +34,25 @@ angular
         redirectTo: '/'
       })
   }])
+
+  .run(function($rootScope, $location) {
+    $rootScope.$on( "$routeChangeStart", function(event, next, current) {
+      //Checks to make sure only a logged in admin can access the page
+      if(next.templateUrl === '/templates/admin.html' && $rootScope.admin) {
+        $location.path('/admin');
+      //Checks to make sure only a logged in guest can access the page
+      } else if(next.templateUrl === '/templates/guest.html' && $rootScope.guest) {
+        $location.path('/guest');
+      } else if(next.templateUrl === '/templates/admin-login.html') {
+        $location.path('/admin-login');
+      } else if(next.templateUrl === '/templates/guest-login.html') {
+        $location.path('/guest-login');
+      } else if(next.templateUrl === '/templates/guest-register.html') {
+        $location.path('/guest-register');
+      } else if(next.templateUrl === '/templates/admin-register.html') {
+        $location.path('/admin-register');
+      } else {
+        $location.path('/')
+      }
+    });
+  });

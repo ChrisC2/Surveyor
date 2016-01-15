@@ -128,3 +128,7 @@ angular
       }
     }
   }])
+
+  .factory('Auth', [function(){
+    
+  }])
