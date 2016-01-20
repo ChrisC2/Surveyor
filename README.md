@@ -30,6 +30,7 @@ node server.js
 ```
 
 ## Navigate the App:
+View app on the browser: http://localhost:8000/
 
 ### Must start as Admin:
 1. Register as an Admin
