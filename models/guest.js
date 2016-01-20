@@ -1,3 +1,5 @@
+//Configures Guest model and defines "one to many " relationship with the Answer tables
+
 "use strict";
 
 module.exports = function(sequelize, DataTypes) {

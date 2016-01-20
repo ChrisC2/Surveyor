@@ -21,7 +21,7 @@
             </div>
           </div>
       <div class="question" ng-repeat="questions in questionStorage">
-          <h1>{{questions.question}}</h1>
+          <h2>{{questions.question}}</h2>
           <h3>Answers: </h3>
           <ul>
             <li ng-repeat="answers in questions.answers ">{{answers.answer}}: {{answers.count}}</li>
@@ -37,7 +37,7 @@
             <img class="close-icon" src="icons/ic_close_24px.svg">
           </div>
           Your Question: <br>
-          {{currentQuestion.question}}
+          <h3>{{currentQuestion.question}}</h3>
           <div ng-repeat="choice in currentChoices">
             <ul>
               <li>{{choice}}</li>
@@ -47,17 +47,16 @@
             Question: <br>
             <input ng-model="currentQuestion.question" type="text" id="question">
             <br>
-            <button class="question-button" type="button" ng-click="postQuestion(currentQuestion.question)">Add Question</button>
+            <button class="btn btn-default btn-question" type="button" ng-click="postQuestion(currentQuestion.question)">Add Question</button>
           </form>
           <form id="answers-form">
             Add Multiple Answers: <br>
             <input ng-model="answer" type="text" id="answer">
             <br>
-            <button class="btn-choice" type="button" ng-click="addChoice(currentQuestion.questionId, answer)">Add Answer</button>
-            <br>
-            <button class="finalize" type="button" ng-click="resetQuestion()">Finalize Your Question</button>
-            <br>
+            <button class="btn btn-default btn-choice" type="button" ng-click="addChoice(currentQuestion.questionId, answer)">Add Answer</button>
           </form>
+          <button class="btn btn-primary btn-lg btn-block finalize" type="button" ng-click="resetQuestion()">Finalize Your Question</button>
+
         </div>
       </div>
 </div>

@@ -1,3 +1,6 @@
+//Configure & initialize all models for the tables Admin, Guest, Question, Answer, & Choice
+
+
 "use strict";
 
 var fs = require("fs");

@@ -1,3 +1,5 @@
+//Configures Answer model and defines "belongs to" relationship with the Guest & Answer tables
+
 "use strict";
 
 module.exports = function(sequelize, DataTypes) {

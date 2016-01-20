@@ -1,3 +1,6 @@
+//Configures Choice model and defines "belongs to" relationship with the Choice tables
+
+
 "use strict";
 
 module.exports = function(sequelize, DataTypes) {

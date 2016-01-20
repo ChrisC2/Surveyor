@@ -26,14 +26,15 @@
     $('.add-question').fadeToggle();
   })
 
-  $('.question-button').on('click', function() {
+  $('.btn-question').on('click', function() {
     $('#question-form').hide();
     $('#answers-form').show();
   })
 
   $('.finalize').on('click', function() {
     $('#answers-form').hide();
-    $('#question-form').show()
+    $('#question-form').show();
+    $('.modal').toggle();
   })
 
   $('.btn-choice').on('click', function () {

@@ -1,3 +1,6 @@
+// Configures Question model and defines "belongs to" relationship with the Admin table along with
+// "one to many" relationships with Choice and Answer tables
+
 "use strict";
 
 module.exports = function(sequelize, DataTypes) {

@@ -1,3 +1,5 @@
+//Configures Admin model and defines One to Many Relationship with the Question table
+
 "use strict";
 
 module.exports = function(sequelize, DataTypes) {
