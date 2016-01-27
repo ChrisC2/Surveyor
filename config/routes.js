@@ -45,7 +45,6 @@ router.post('/admin/choice/:qid', function (req, res) {
 
 //Find a Random Question for Guest
 router.get('/guest/question', helpers.isAuthenticated, function (req, res) {
-  console.log('THIS IS TOTAL---------------------------------', models.Question.count())
   return models.Question.count().then(function(questionCount){
     return models.Answer.findAll({
       where : {
@@ -53,11 +52,13 @@ router.get('/guest/question', helpers.isAuthenticated, function (req, res) {
       }
     }).then(function(answerCount){
       if(questionCount === answerCount.length) {
+        console.log('INSIDE ==== null')
         return null
       } else {
         var resolvedQuestion = Promise.resolve(resolvedQuestion).then(function(){
           return helpers.selectQuestion(questionCount, req.user.id)
         })
+        console.log('THIS IS RESOLVED QUESTION-------------', resolvedQuestion)
         return resolvedQuestion
       }
     })
