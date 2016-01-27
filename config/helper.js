@@ -12,6 +12,7 @@ var helpers = {};
 
   //Recursively Selects a random Id to Query for GET '/guest/question' route
   helpers.selectQuestion = function (count, guestId) {
+    console.log('INSIDE HELPER FUNCTION')
     //Check if that Question Id has already been answered
     var randomNum = Math.floor((Math.random() * count) + 1);
     return models.Answer.findAll({

@@ -45,6 +45,7 @@ router.post('/admin/choice/:qid', function (req, res) {
 
 //Find a Random Question for Guest
 router.get('/guest/question', helpers.isAuthenticated, function (req, res) {
+  console.log('THIS IS TOTAL---------------------------------', models.Question.count())
   return models.Question.count().then(function(questionCount){
     return models.Answer.findAll({
       where : {
