@@ -31,6 +31,7 @@ var helpers = {};
             {model: models.Choice}
           ]
         }).then(function(question){
+          console.log('THIS IS THE RETURNED QUESTION------', question)
           return question
         })
       } else {
