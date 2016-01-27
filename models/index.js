@@ -8,15 +8,28 @@ var path = require("path");
 var Sequelize = require("sequelize");
 var env = process.env.NODE_ENV || "development";
 var config = require(__dirname + '/../config/config.json')[env];
-var sequelize = new Sequelize('Surveyor', 'root', null, {
-  host: 'localhost',
-  dialect: 'mysql',
-  pool: {
-    max: 5,
-    min: 0,
-    idle: 10000
-  },
-});
+var sequelize;
+
+if(process.env.CLEARDB_DATABASE_URL) {
+  sequelize = new Sequelize(process.env.CLEARDB_DATABASE_URL, {
+    pool: {
+      max: 5,
+      min: 0,
+      idle: 10000
+    },
+  })
+} else {
+  sequelize = new Sequelize('Surveyor', 'root', null, {
+    host: 'localhost',
+    dialect: 'mysql',
+    pool: {
+      max: 5,
+      min: 0,
+      idle: 10000
+    },
+  });
+}
+
 var db = {};
 
 fs.readdirSync(__dirname).filter(function(file) {

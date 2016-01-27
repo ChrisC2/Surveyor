@@ -61,12 +61,16 @@ angular
           questionId: returnObj.data.id,
           question: returnObj.data.question
         };
-        returnObj.data.Choices.forEach(function(answer){
-          $scope.answerStorage.push({
-            answerId: answer.id,
-            answer: answer.choice
+        if(returnObj.data.question === "All Answered") {
+          return
+        } else {
+          returnObj.data.Choices.forEach(function(answer){
+            $scope.answerStorage.push({
+              answerId: answer.id,
+              answer: answer.choice
+            })
           })
-        })
+        }
       })
     },
     $scope.postAnswer = function(questionId, answer) {
