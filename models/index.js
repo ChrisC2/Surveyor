@@ -13,9 +13,9 @@ var sequelize;
 if(process.env.CLEARDB_DATABASE_URL) {
   sequelize = new Sequelize(process.env.CLEARDB_DATABASE_URL, {
     pool: {
-      max: 5,
-      min: 0,
-      idle: 10000
+      maxConnections: 5,
+      minConnections: 0,
+      maxIdleTime: 90000
     },
   })
 } else {
