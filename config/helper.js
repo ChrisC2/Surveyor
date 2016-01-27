@@ -24,7 +24,8 @@ var helpers = {};
       console.log('THIS IS RESULT of FINALL QUERY---', result)
       //If question hasn't been answered query for that question
       if(result.length === 0) {
-        return models.Question.findAll({
+        console.log('THIS IS RANDOM NUM', randomNum)
+        return models.Question.findOne({
           where: {
             id: randomNum
           },
