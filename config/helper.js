@@ -33,6 +33,7 @@ var helpers = {};
           return question
         })
       } else {
+        console.log('RECURSING')
         //Else recurse to find an unanswered question
         return helpers.selectQuestion(count, guestId)
       }
