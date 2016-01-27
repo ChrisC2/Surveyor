@@ -61,6 +61,7 @@ router.get('/guest/question', helpers.isAuthenticated, function (req, res) {
       }
     })
   }).then(function(results){
+    console.log('THIS IS SENT---------------------------------------------------', results)
     if(results === null){
       res.json({question: "All Answered"})
     } else {
