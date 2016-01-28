@@ -58,12 +58,10 @@ router.get('/guest/question', helpers.isAuthenticated, function (req, res) {
         var resolvedQuestion = Promise.resolve(resolvedQuestion).then(function(){
           return helpers.selectQuestion(questionCount, req.user.id)
         })
-        console.log('THIS IS RESOLVED QUESTION-------------', resolvedQuestion)
         return resolvedQuestion
       }
     })
   }).then(function(results){
-    console.log('THIS IS SENT---------------------------------------------------', results)
     if(results === null){
       res.json({question: "All Answered"})
     } else {

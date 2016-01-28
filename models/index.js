@@ -15,7 +15,7 @@ if(process.env.CLEARDB_DATABASE_URL) {
     pool: {
       maxConnections: 5,
       minConnections: 0,
-      maxIdleTime: 90000
+      maxIdleTime: 10000
     },
   })
 } else {

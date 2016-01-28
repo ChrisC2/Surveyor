@@ -61,7 +61,6 @@ angular
           questionId: returnObj.data.id,
           question: returnObj.data.question
         };
-        console.log('THIS IS RETURN OBJ', returnObj)
         if(returnObj.data.question === "All Answered") {
           return
         } else {

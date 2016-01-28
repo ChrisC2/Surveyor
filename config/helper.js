@@ -12,7 +12,6 @@ var helpers = {};
 
   //Recursively Selects a random Id to Query for GET '/guest/question' route
   helpers.selectQuestion = function (count, guestId) {
-    console.log('INSIDE HELPER FUNCTION')
     //Check if that Question Id has already been answered
     var randomNum = Math.floor((Math.random() * count) + 1);
     return models.Answer.findAll({
@@ -21,10 +20,8 @@ var helpers = {};
         QuestionId: randomNum
       }
     }).then(function(result) {
-      console.log('THIS IS RESULT of FINALL QUERY---', result)
       //If question hasn't been answered query for that question
       if(result.length === 0) {
-        console.log('THIS IS RANDOM NUM', randomNum)
         return models.Question.findOne({
           where: {
             id: randomNum
@@ -33,11 +30,9 @@ var helpers = {};
             {model: models.Choice}
           ]
         }).then(function(question){
-          console.log('THIS IS THE RETURNED QUESTION------', question)
           return question
         })
       } else {
-        console.log('RECURSING')
         //Else recurse to find an unanswered question
         return helpers.selectQuestion(count, guestId)
       }
