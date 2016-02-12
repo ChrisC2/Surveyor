@@ -52,7 +52,6 @@ router.get('/guest/question', helpers.isAuthenticated, function (req, res) {
       }
     }).then(function(answerCount){
       if(questionCount === answerCount.length) {
-        console.log('INSIDE ==== null')
         return null
       } else {
         var resolvedQuestion = Promise.resolve(resolvedQuestion).then(function(){
