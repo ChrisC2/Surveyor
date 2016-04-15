@@ -129,6 +129,14 @@ angular
   }])
   .controller('ModalInstanceCtrl', function ($scope, $modalInstance, question) {
   $scope.question = question;
+  $scope.countVotes = function(){
+    var count = 0;
+    $scope.question.answers.forEach(function(answer){
+      count += answer.values[0];
+    })
+    return count
+  }
+  $scope.count = $scope.countVotes();
 
   $scope.chartJson = {
         globals: {
@@ -140,15 +148,13 @@ angular
         backgroundColor: "#fff",
 
         legend: {
-            position: "50%",
+
             borderColor: "transparent",
             marker: {
                 borderRadius: 10,
                 borderColor: "transparent"
             },
-            item: {
-              align: "center"
-            }
+            align: "left"
         },
         tooltip: {
             text: "%v votes"
