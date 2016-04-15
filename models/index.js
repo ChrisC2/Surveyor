@@ -12,7 +12,7 @@ var sequelize;
 
 if(process.env.DATABASE_URL) {
   sequelize = new Sequelize(process.env.DATABASE_URL, {
-    pool: {
+    pool: { 
       maxConnections: 5,
       minConnections: 0,
       maxIdleTime: 10000
