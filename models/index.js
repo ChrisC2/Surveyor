@@ -10,9 +10,9 @@ var Sequelize = require("sequelize");
 // var config = require(__dirname + '/../config/config.json')[env];
 var sequelize;
 
-if(process.env.DATABASE_URL) {
+if(process.env.DATABASE_URL) { 
   sequelize = new Sequelize(process.env.DATABASE_URL, {
-    pool: { 
+    pool: {
       maxConnections: 5,
       minConnections: 0,
       maxIdleTime: 10000
