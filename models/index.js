@@ -10,8 +10,8 @@ var Sequelize = require("sequelize");
 // var config = require(__dirname + '/../config/config.json')[env];
 var sequelize;
 
-if(process.env.CLEARDB_DATABASE_URL) {
-  sequelize = new Sequelize(process.env.CLEARDB_DATABASE_URL, {
+if(process.env.DATABASE_URL) {
+  sequelize = new Sequelize(process.env.DATABASE_URL, {
     pool: {
       maxConnections: 5,
       minConnections: 0,
@@ -21,7 +21,7 @@ if(process.env.CLEARDB_DATABASE_URL) {
 } else {
   sequelize = new Sequelize('Surveyor', 'root', null, {
     host: 'localhost',
-    dialect: 'mysql',
+    dialect: 'postgres',
     pool: {
       max: 5,
       min: 0,
