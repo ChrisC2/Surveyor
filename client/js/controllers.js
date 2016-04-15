@@ -92,7 +92,6 @@ angular
       AdminService.getQuestions()
       .then(function(data){
         $scope.questionStorage = data;
-        console.log('this is questionStorage', $scope.questionStorage)
       })
     },
     $scope.open = function (index) {
