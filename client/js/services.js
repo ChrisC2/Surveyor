@@ -47,8 +47,8 @@ angular
             })
             for(var answer in storageObj){
               answerStorage.push({
-                answer: answer,
-                count: storageObj[answer]
+                text: answer,
+                values: [storageObj[answer]]
               });
             }
             questionStorage.push({

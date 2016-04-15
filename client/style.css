@@ -7,6 +7,10 @@ body {
   font-family: 'Roboto', sans-serif !important;
 }
 
+.title {
+  font-family:'Lobster', sans-serif;
+}
+
 .center-div{
   margin: auto;
   top: 0;
@@ -200,6 +204,7 @@ form {
   -o-box-shadow: 4px 4px 2px #888888;
   box-shadow: 4px 4px 2px #888888;
   background-color: white;
+  padding-bottom: 10px;
 }
 .question h1 {
   padding-left: 20px;
@@ -215,7 +220,8 @@ form {
 }
 .question h3 {
   padding-left: 20px;
-  color: grey;
+  padding-top: 20px;
+  padding-bottom: 0px;
   line-height: 1em;
 }
 
@@ -258,4 +264,7 @@ form {
 
 .btn-question {
   margin-top: 10px
+}
+.result-btn {
+  padding-left: 20px;
 }

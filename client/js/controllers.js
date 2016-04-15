@@ -1,5 +1,5 @@
 angular
-  .module('app.controllers', [])
+  .module('app.controllers', ['ui.bootstrap'])
   .controller('MainCtrl',['$scope', 'GuestService', 'AdminService', '$location', '$rootScope', function($scope, GuestService, AdminService, $location, $rootScope){
 
     $scope.guestLogin = function(user){
@@ -83,7 +83,7 @@ angular
       })
     }
   }])
-  .controller('AdminCtrl', ['$scope', 'AdminService', function($scope, AdminService){
+  .controller('AdminCtrl', ['$scope', 'AdminService', '$modal', function($scope, AdminService, $modal){
     $scope.questionStorage = [];
     $scope.currentQuestion = null;
     $scope.currentChoices = [];
@@ -92,8 +92,21 @@ angular
       AdminService.getQuestions()
       .then(function(data){
         $scope.questionStorage = data;
+        console.log('this is questionStorage', $scope.questionStorage)
       })
     },
+    $scope.open = function (index) {
+      var modalInstance = $modal.open({
+        animation: true,
+        templateUrl: 'modalContent.html',
+        controller: 'ModalInstanceCtrl',
+        resolve: {
+          question: function () {
+          return $scope.questionStorage[index];
+        }
+      }
+    })
+  },
     $scope.postQuestion = function(question) {
       AdminService.postQuestion(question)
       .success(function(data){
@@ -115,3 +128,47 @@ angular
       $scope.getQuestions();
     }
   }])
+  .controller('ModalInstanceCtrl', function ($scope, $modalInstance, question) {
+  $scope.question = question;
+
+  $scope.chartJson = {
+        globals: {
+            shadow: false,
+            fontFamily: "Verdana",
+            fontWeight: "100"
+        },
+        type: "pie3d",
+        backgroundColor: "#fff",
+
+        legend: {
+            position: "50%",
+            borderColor: "transparent",
+            marker: {
+                borderRadius: 10,
+                borderColor: "transparent"
+            },
+            item: {
+              align: "center"
+            }
+        },
+        tooltip: {
+            text: "%v votes"
+        },
+        plot: {
+            valueBox: {
+                placement: "in",
+                text: "%npv %",
+                fontSize: "15px",
+                textAlpha: 1,
+                rules: [{
+                  rule: "%v == 0",
+                  visible: false
+                }]
+            },
+        },
+        series: $scope.question.answers
+    };
+  $scope.cancel = function () {
+    $modalInstance.dismiss();
+  };
+});

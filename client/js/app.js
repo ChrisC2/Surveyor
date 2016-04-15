@@ -1,5 +1,5 @@
 angular
-  .module('app',['ngRoute', 'app.controllers', 'app.services', 'ui.bootstrap'])
+  .module('app',['ngRoute', 'app.controllers', 'app.services', 'ui.bootstrap', 'zingchart-angularjs'])
   .config(['$routeProvider', function ($routeProvider){
     $routeProvider
       .when('/', {
